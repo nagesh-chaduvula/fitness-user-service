@@ -7,16 +7,20 @@ import com.fitness.userservice.enums.UserRoleEnum;
 import com.fitness.userservice.repositories.UserRepository;
 import com.fitness.userservice.services.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
     @Override
     public UserResponse registerUser(UserRegisterRequest userRegisterRequest) {
+        log.info("***** Registering user with email: {}", userRegisterRequest.getEmail());
+
         if (userRepository.existsByEmail(userRegisterRequest.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
@@ -34,11 +38,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getUserProfile(String userId) {
+        log.info("***** Fetching user profile for user ID: {}", userId);
         UserEntity userEntity = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         return mapToUserResponse(userEntity);
     }
 
+    @Override
+    public Boolean existByUserId(String userId) {
+        log.info("***** Checking existence of user ID: {}", userId);
+        return userRepository.existsById(userId);
+    }
+
     private UserResponse mapToUserResponse(UserEntity savedUserEntity) {
+        log.info("***** Mapping UserEntity to UserResponse for user ID: {}", savedUserEntity.getId());
         UserResponse userResponse = new UserResponse();
         userResponse.setId(savedUserEntity.getId());
         userResponse.setEmail(savedUserEntity.getEmail());

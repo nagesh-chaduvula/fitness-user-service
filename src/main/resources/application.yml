@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: fitness-user-service
@@ -24,8 +27,11 @@ spring:
         hbm2ddl:
           auto: update
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 
-server:
-  port: 8081
+
 
 
