@@ -3,6 +3,7 @@ package com.fitness.userservice.services.impl;
 import com.fitness.userservice.dto.UserRegisterRequest;
 import com.fitness.userservice.dto.UserResponse;
 import com.fitness.userservice.entities.UserEntity;
+import com.fitness.userservice.enums.UserRoleEnum;
 import com.fitness.userservice.repositories.UserRepository;
 import com.fitness.userservice.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
         userResponse.setEmail(savedUserEntity.getEmail());
         userResponse.setFirstName(savedUserEntity.getFirstName());
         userResponse.setLastName(savedUserEntity.getLastName());
-        userResponse.setUserRole(savedUserEntity.getUserRole().toString());
+        userResponse.setUserRole(UserRoleEnum.decode(savedUserEntity.getUserRole().getRole()).getRole());
         userResponse.setCreatedAt(savedUserEntity.getCreatedAt().toString());
         userResponse.setUpdatedAt(savedUserEntity.getUpdatedAt().toString());
         return userResponse;
